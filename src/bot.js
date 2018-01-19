@@ -46,8 +46,8 @@ const doTweet = () => {
 			if (err) {
 				console.error(err);
 			}
-			console.info(data);
-			console.info(response);
+			//console.info(data);
+			//console.info(response);
 		});
 	} else {
 		console.error('Gave up trying to come up with a unique name. :(');
