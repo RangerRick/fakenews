@@ -1,3 +1,4 @@
+The {city} {noun} Bulletin
 The {city} {noun} Courier
 The {city} {noun} Gazette
 The {city} {noun} Herald
