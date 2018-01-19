@@ -55,7 +55,7 @@ const doTweet = () => {
 };
 
 const handleExit = (signal) => {
-	fs.writeFileSync('./tweeted.json', JSON.stringify(tweeted));
+	fs.writeFileSync('./tweeted.json', JSON.stringify(tweeted, undefined, 2));
 	process.exit();
 };
 
