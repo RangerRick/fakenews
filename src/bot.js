@@ -1,34 +1,68 @@
-// listen on port so now.sh likes it
-const { createServer } = require('http')
+const Twit = require('twit');
+const config = require('./config');
 
-// bot features
-// due to the Twitter ToS automation of likes
-// is no longer allowed, so:
-const Twit = require('twit')
-const config = require('./config')
-const consoleLol = require('console.lol')
+const bot = new Twit(config.twitterKeys);
 
-const bot = new Twit(config.twitterKeys)
+const fs = require('fs');
+const rando = require('./rando');
 
-const retweet = require('./api/retweet')
-const reply = require('./api/reply')
+console.info('Bot starting...')
 
-console.rofl('Bot starting...')
+const nouns = fs.readFileSync('./nounlist.txt', 'utf8').split(/[\r\n]+/).filter((entry) => {
+	return entry.match(/\S+/);
+});
+const cities = require('../cities.json');
+const templates = fs.readFileSync('./templates.txt', 'utf8').split(/[\r\n]+/).filter((entry) => {
+	return entry.match(/\s+/);
+});
 
-// retweet on keywords
-retweet()
-setInterval(retweet, config.twitterConfig.retweet)
+let tweeted = require('../tweeted.json');
 
-// reply to new follower
-const userStream = bot.stream('user')
-userStream.on('follow', reply)
+const capitalize = (word) => {
+	return word.substr(0, 1).toUpperCase() + word.substr(1).toLowerCase();
+};
 
-// This will allow the bot to run on now.sh
-const server = createServer((req, res) => {
-  res.writeHead(302, {
-    Location: `https://twitter.com/${config.twitterConfig.username}`
-  })
-  res.end()
-})
+const generate = () => {
+	const template = rando(templates);
+	const noun = rando(nouns);
+	const city = rando(cities);
 
-server.listen(3000)
+	return template.replace('{city}', city).replace('{noun}', capitalize(noun));
+};
+
+const doTweet = () => {
+	let tweet, count = 0;
+	do {
+		tweet = generate();
+		count++;
+	} while (tweeted.indexOf(tweet) >= 0 && count <= 1000);
+
+	if (tweeted.indexOf(tweet) === -1) {
+		console.info('Found unique name: ' + tweet);
+		tweeted.push(tweet);
+		bot.post('statuses/update', {
+			status: tweet
+		}, (err, data, response) => {
+			if (err) {
+				console.error(err);
+			}
+			console.info(data);
+			console.info(response);
+		});
+	} else {
+		console.error('Gave up trying to come up with a unique name. :(');
+	}
+};
+
+const handleExit = (signal) => {
+	fs.writeFileSync('./tweeted.json', JSON.stringify(tweeted));
+	process.exit();
+};
+
+process.on('SIGINT', handleExit);
+process.on('SIGTERM', handleExit);
+
+doTweet();
+setInterval(doTweet, config.twitterConfig.interval);
+
+process.stdin.resume();

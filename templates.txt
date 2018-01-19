@@ -1,0 +1,13 @@
+The {city} {noun} Courier
+The {city} {noun} Gazette
+The {city} {noun} Herald
+The {city} {noun} Inquirer
+The {city} {noun} Journal
+The {city} {noun} Observer
+{noun} News
+{noun} News Channel
+{noun} News Network
+The {city} {noun} Post
+The {city} {noun} Times
+{noun} Today
+The {city} {noun} Tribune
