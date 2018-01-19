@@ -3,11 +3,13 @@ The {city} {noun} Gazette
 The {city} {noun} Herald
 The {city} {noun} Inquirer
 The {city} {noun} Journal
+The {city} {noun} Mailer
 The {city} {noun} Observer
+The {city} {noun} Post
+The {city} {noun} Recorder
+The {city} {noun} Times
+The {city} {noun} Tribune
 {noun} News
 {noun} News Channel
 {noun} News Network
-The {city} {noun} Post
-The {city} {noun} Times
 {noun} Today
-The {city} {noun} Tribune
