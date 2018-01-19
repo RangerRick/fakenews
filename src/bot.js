@@ -41,7 +41,7 @@ const doTweet = () => {
 		console.info('Found unique name: ' + tweet);
 		tweeted.push(tweet);
 		bot.post('statuses/update', {
-			status: tweet
+			status: tweet + ' #FakeNews'
 		}, (err, data, response) => {
 			if (err) {
 				console.error(err);
