@@ -698,7 +698,7 @@ cause
 caution
 cave
 c-clamp
-cd
+CD
 ceiling
 celebration
 celeriac
