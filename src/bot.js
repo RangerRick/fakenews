@@ -1,34 +1,15 @@
+const fs = require('fs');
+
 const Twit = require('twit');
 const config = require('./config');
 
 const bot = new Twit(config.twitterKeys);
 
-const fs = require('fs');
-const rando = require('./rando');
+const generate = require('./generate');
 
 console.info('Bot starting...')
 
-const nouns = fs.readFileSync('./nounlist.txt', 'utf8').split(/[\r\n]+/).filter((entry) => {
-	return entry.match(/\S+/);
-});
-const cities = require('../cities.json');
-const templates = fs.readFileSync('./templates.txt', 'utf8').split(/[\r\n]+/).filter((entry) => {
-	return entry.match(/\s+/);
-});
-
 let tweeted = require('../tweeted.json');
-
-const capitalize = (word) => {
-	return word.substr(0, 1).toUpperCase() + word.substr(1).toLowerCase();
-};
-
-const generate = () => {
-	const template = rando(templates);
-	const noun = rando(nouns);
-	const city = rando(cities);
-
-	return template.replace('{city}', city).replace('{noun}', capitalize(noun));
-};
 
 const doTweet = () => {
 	let tweet, count = 0;
