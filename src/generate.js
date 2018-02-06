@@ -22,7 +22,7 @@ const generate = () => {
 	const noun = rando(nouns);
 	const city = rando(cities);
 
-	return template.replace('{city}', city).replace('{noun}', capitalize(noun));
+	return capitalize(template.replace('{city}', city).replace('{noun}', noun));
 };
 
 module.exports = generate;
